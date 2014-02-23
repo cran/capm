@@ -1,0 +1,185 @@
+\name{PlotModels}
+\alias{PlotModels}
+\title{Plot results of capm model functions}
+\usage{
+PlotModels(model.out = NULL, variable = NULL, col = "red",
+  col1 = c("cadetblue1", "yellow", "red"), col2 = c("blue", "darkgreen",
+  "darkred"), x.label = "Years", y.label = NULL,
+  scen.label = "Im = (__ * owned carrying capacity)", leg.label = NULL,
+  pop = NULL)
+}
+\arguments{
+  \item{model.out}{output of one of the function previously
+  mentioned.}
+
+  \item{variable}{string to specify the variable to be
+  ploted.
+
+  For \code{\link{SolveSI}} function:
+
+  "n" (population size).
+
+  "q" (proportion of sterilized animals).
+
+  For \code{\link{SolveIASA}} function using only point
+  estimates:
+
+  "f1" (owned intact females).
+
+  "fs1" (owned sterilized females).
+
+  "m1" (owned intact males).
+
+  "ms1" (owned sterilized males).
+
+  "f2" (stray intact females).
+
+  "fs2" (stray sterilized females).
+
+  "m2" (stray intact males).
+
+  "ms2" (stray sterilized males).
+
+  "n1" (owned intact animals).
+
+  "ns1" (owned sterilized animals).
+
+  "n2" (stray intact animals).
+
+  "ns2" (stray sterilized animals).
+
+  "N1" (owned animals).
+
+  "N2" (stray animals).
+
+  "N" (total population).
+
+  For \code{\link{SolveIASA}} function using *.range
+  arguments:
+
+  "f" (intact females).
+
+  "fs" (sterilized females).
+
+  "m" (intact males).
+
+  "ms" (sterilized males).
+
+  "n" (intact animals).
+
+  "ns" (sterilized animals).
+
+  "N" (Total population stratified by reproductive status).
+
+  For \code{\link{SolveTC}} function:
+
+  "n" (fertile animals).
+
+  "ns" (sterilized animals).
+
+  "tns" (cumulative of sterilized animals)}
+
+  \item{col}{string indicating the color of ploted line,
+  when \code{s.range} is \code{NULL}.}
+
+  \item{col1}{\code{\link{character}} \code{\link{vector}}
+  indicating the color of lowest (highest) population sizes
+  (proportion of sterilized animals), when \code{s.range}
+  is not \code{NULL}.}
+
+  \item{col2}{\code{\link{character}} \code{\link{vector}}
+  indicating the color of highest (lowest) population sizes
+  (proportion of sterilized animals), when \code{s.range}
+  is not \code{NULL}.}
+
+  \item{x.label}{string with the name of x axis.}
+
+  \item{y.label}{string with the name of y axis.}
+
+  \item{leg.label}{string with the name of legend, for
+  plots of \code{\link{SolveIASA}} output.}
+
+  \item{scen.label}{string with the name of scenarios of
+  \code{\link{SolveIASA}} output, determined by the
+  immigartion rates. Within the string, use the expression
+  __ in the location where you want to appear the value of
+  the immigartion rate. For line breaking, use \code{\\n}
+  (see examples).}
+
+  \item{pop}{value indicating the output of
+  \code{\link{SolveIASA}} to be ploted. When \code{NULL}
+  (default), plots for owned and stray populations under
+  scenarios created by immigartion rate are created. If
+  \code{1}, the plots of owned population for the minimum
+  immigartion rate are ploted. When \code{2}, the plots of
+  stray population for the minimum immigartion rate are
+  ploted. If \code{3}, the plots of owned population for
+  the maximum immigartion rate are ploted. When \code{4},
+  the plots of owned population for the maximum immigartion
+  rate are ploted.}
+}
+\description{
+Plot results of one of the following functions:
+\code{\link{SolveIASA}}, \code{\link{SolveSI}} or
+\code{\link{SolveTC}}.
+}
+\details{
+Font size of saved plots is usually different to the font
+size seen in graphic browsers. Before changing font sizes,
+see the final result in saved (or preview) plots.
+
+Other details of the plot can be modifyed using appropriate
+functions from \code{ggplot2} package.
+}
+\examples{
+#####################
+## SolveIASA model ##
+#####################
+
+## Parameters and intial conditions.
+pars.solveiasa = c(
+   b1 = 21870.897, b2 = 4374.179,
+   df1 = 0.104, dm1 = 0.098, df2 = 0.1248, dm2 = 0.1176,
+   sf1 = 0.069, sf2 = 0.05, sm1 = 0.028, sm2 = 0.05,
+   k1 = 98050.49, k2 = 8055.456, h1 = 1, h2 = .5,
+   ab = 0.054, ad = 0.1, v = 0.2, z = 0.1)
+
+init.solveiasa = c(
+   f1 = 33425.19, fs1 = 10864.901,
+   m1 = 38038.96, ms1 = 6807.759,
+   f2 = 3342.519, fs2 = 108.64901,
+   m2 = 3803.896, ms2 = 68.07759)
+
+
+# Solve for point estimates.
+solveiasa.pt <- SolveIASA(pars = pars.solveiasa,
+                          init = init.solveiasa,
+                          time = 0:10, method = 'rk4')
+
+# Solve for parameter ranges.
+solveiasa.rg <- SolveIASA(pars = pars.solveiasa,
+                          init = init.solveiasa,
+                          time = 0:10,
+                          s.range = seq(0, .4, l = 15),
+                          ab.range = c(0, .2),
+                          ad.range = c(0, .2),
+                          im.range = c(0, .1),
+                          method = 'rk4')
+
+## Plot stray population sizes using point estimates
+# Uncomment the following line:
+# PlotModels(solveiasa.pt, variable = "ns2")
+
+## Plot all scenarios and change the label for the scenarios.
+# Uncomment the following line:
+# PlotModels(solveiasa.rg, variable = 'ns', scen.label = 'Im = (__ * de la capacidad de carga)')
+}
+\references{
+Chang W (2012). R Graphics Cookbook. O'Reilly Media, Inc.
+
+\url{http://oswaldosantos.github.io/capm}
+}
+\seealso{
+\link[deSolve]{plot.deSolve}.
+}
+
