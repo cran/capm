@@ -1,0 +1,73 @@
+capm 0.3
+========
+
+* First stable version.
+
+* Packages dependencies removed. Packages are now imported.
+
+
+capm 0.2.6
+==========
+
+* GraphicInterface: documentation improvements.
+
+
+capm 0.2.5
+==========
+
+* References to the capm web page.
+
+
+capm 0.2.4
+==========
+
+* capm-package.R: "capm" alias removed to avoid duplicaed help pages.
+
+* GraphicInterface: documentation improvements.
+
+
+capm 0.2.3
+==========
+
+* General documentation improvements.
+
+* GraphicInterface: In SurveyAnalysis interface, the "Estimates" Tab now have a field to specifcy the confidence level required.
+
+
+capm 0.2.2
+==========
+
+* GraphicInterface: bug fixed in SelectSamplingUnits to show example map.
+
+* GraphicInterface: CalculateSampleSize interface now have an appropriate title.
+
+* Calculate2StageSampleSize: documentation improvements.
+
+* CalculateGlobalSens: documentation improvements.
+
+* CalculateLocalSens: documentation improvements.
+
+capm 0.2.1
+==========
+
+
+* Encoding field removed from DESCRIPTION file to aovid warning message during package checking.
+
+* psu.ssu.Rd: accent removed from documentation to aovid warning message during package checking.
+
+capm 0.2.0
+==========
+
+* Package version increment now refletcs changes in the package, using Semantic Versioning as a reference (http://semver.org/).
+
+* GraphicInterface: SolveIASA argument now produces a graphic interface with restructured Tab order and contents. The new "Introduction" Tab explains the basic functionality of the interface.
+
+* GraphicInterface: complete documentation.
+
+* "Debian" directory removed.
+
+* Directory tree restructured to match CRAN requirements.
+
+* Examples for functions simplified to be run in less time.
+
+* General documentation improvements.
