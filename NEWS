@@ -1,11 +1,32 @@
+capm 0.8.0
+==========
+* CalculatePopChange: more informative uotput.
+
+capm 0.7.3
+==========
+* PlotPopPyramid: argument legend.label added. x-axis marks are now correctly displayed.
+
+capm 0.7.2
+==========
+* PlotGlobalSens: changes in arugment names: nam.leg to legend.label; mm.leg to mm.label; sd.leg to sd.label.
+
+
+capm 0.7.1
+==========
+* PlotModels: bug fix for facet names.  Changes in arugment names: leg.label to legend.label and scen.label to scenarios.label.
+
+* PlotLocalSens: Descending oreder (left to right) for L1 and L2.  Change in argument name: ax.size to label.size. Plots are returned explicitly to allow further ggplot2 arguments.
+
+* SolveTC: bug fix in equations.
+
 capm 0.7.0
 ==========
-Changes intended to appear in version 0.6.0 were not included. Now they appear in this version.
+* Changes intended to appear in version 0.6.0 were not included. Now they appear in this version.
 
 capm 0.6.0
 ==========
-SolveIASA: change in abbreviations for abandonment, adoption and immigration range.
-SolveTC: change in abbreviation for parameters of sterilized animals.
+* SolveIASA: change in abbreviations for abandonment, adoption and immigration range.
+* SolveTC: change in abbreviation for parameters of sterilized animals.
 capm 0.5.2
 
 ==========

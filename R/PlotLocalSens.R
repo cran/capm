@@ -5,7 +5,7 @@
 #' @param x.sens string with the name of x axis for sensitivity functions.
 #' @param y.sens string with the name of y axis for sensitivity functions.
 #' @param y.ind string with the name of y axis for the parameter importance indices.
-#' @param ax.size a number to specify the size of axes labels and text.
+#' @param label.size a number to specify the size of axes labels and text.
 #' @details Font size of saved plots is usually different to the font size seen in graphic browsers. Before changing font sizes, see the final result in saved (or preview) plots.
 #' @references Chang W (2012). R Graphics Cookbook. O'Reilly Media, Inc.
 #' 
@@ -47,49 +47,48 @@
 #' # Uncomment the following line:
 #' # PlotLocalSens(local.solve.iasa2)
 #' 
-PlotLocalSens <- function(local.out = NULL, x.sens = "Time", y.sens = "Sensitivity", y.ind = c("L1", "L2", "Mean", "Min", "Max"), ax.size = 10, type = 1) {
+PlotLocalSens <- function (local.out = NULL, x.sens = "Time", y.sens = "Sensitivity", y.ind = c("L1", "L2", "Mean", "Min", "Max"), label.size = 10, type = 1) {
   if (length(y.ind) != 5) {
-    stop('The length of y.ind must be equal to 5.')
+    stop("The length of y.ind must be equal to 5.")
   }
   x <- value <- variable <- loc1 <- NULL
   loc2 <- loc3 <- loc4 <- loc5 <- NULL
   vplayout <- function(x, y) {
     viewport(layout.pos.row = x, layout.pos.col = y)
-  } 
-  tmp <- melt(local.out[, -2], id.vars = 'x')
-  loc <- ggplot(
-    tmp, aes(x = x, y = value, colour = variable)) + 
-    geom_line(size = .5) +
-    theme(legend.position="none") +
-    xlab(x.sens) + 
-    ylab(y.sens)
-  
-  tmp1 <- cbind(w = factor(
-    rownames(summary(local.out)),
-    levels = (rownames(summary(local.out)))),
-                summary(local.out))
+  }
+  tmp <- melt(local.out[, -2], id.vars = "x")
+  loc <- ggplot(tmp, aes(x = x, y = value, colour = variable)) + 
+    geom_line(size = 0.5) + theme(legend.position = "none") + 
+    xlab(x.sens) + ylab(y.sens)
+  ordered.summary <- summary(local.out)[
+    order(summary(local.out)[, "L1"], decreasing = T), ]
+  tmp1 <- cbind(w = factor(rownames(ordered.summary),
+                           levels = (rownames(ordered.summary))),
+                ordered.summary)
   coln <- colnames(summary(local.out))[-c(1:2, 8)]
+  x.axis.lab <- as.character(tmp1$w)
+  x.axis.lab[which(x.axis.lab =='a')] <- 'a'
+  options(warn = -1)
+  x.axis.lab[which(x.axis.lab =='alpha')] <- expression(alpha)
   for (i in 1:length(coln)) {
-    assign(
-      paste0('loc', i),
-      ggplot(tmp1, aes_string(x = 'w', y = coln[i], 
-                              fill = 'w', colour = 'w')) +
-        geom_bar(stat = 'identity') +
-        theme(
-          legend.position="none",
-          axis.title.x = element_blank(),
-          axis.text.x = element_text(size = ax.size - 1, 
-                                     angle = 90, vjust = .5),
-          axis.title.y = element_text(size = ax.size + 2), 
-          axis.text.y = element_text(size = ax.size)) +
-        ylab(y.ind[i]))
+    assign(paste0("loc", i),
+           ggplot(tmp1, aes_string(x = "w", y = coln[i],
+                                   fill = "w", colour = "w")) +
+             geom_bar(stat = "identity") + 
+             theme(legend.position = "none", 
+                   axis.title.x = element_blank(), 
+                   axis.text.x = element_text(size = label.size - 1, 
+                                              angle = 90, vjust = 0.5),
+                   axis.title.y = element_text(size = label.size + 2),
+                   axis.text.y = element_text(size = label.size)) + 
+             ylab(y.ind[i]) +
+             scale_x_discrete(labels = x.axis.lab)) 
   }
   if (type == 6) {
     options(warn = -1)
     grid.newpage()
     pushViewport(viewport(layout = grid.layout(3, 2)))
-    print(loc + theme(legend.position="none"),
-          vp = vplayout(1, 1))
+    print(loc + theme(legend.position = "none"), vp = vplayout(1, 1))
     print(loc1, vp = vplayout(1, 2))
     print(loc2, vp = vplayout(2, 1))
     print(loc3, vp = vplayout(2, 2))
@@ -98,21 +97,21 @@ PlotLocalSens <- function(local.out = NULL, x.sens = "Time", y.sens = "Sensitivi
     options(warn = 0)
   }
   if (type == 0) {
-    print(loc + theme(legend.position="right"))
+    return(loc + theme(legend.position = "right"))
   }
   if (type == 1) {
-    print(loc1)
+    return(loc1)
   }
   if (type == 2) {
-    print(loc1)
+    return(loc2)
   }
   if (type == 3) {
-    print(loc3)
+    return(loc3)
   }
   if (type == 4) {
-    print(loc4)
+    return(loc4)
   }
   if (type == 5) {
-    print(loc5)
+    return(loc5)
   }
 }

@@ -15,7 +15,7 @@ Current version offers functions that allow users to implement the following wor
   5. Estimation of demographic characteristics (totals, proportions, means and ratios).
   6. Construction of population pyramids, conditioned on sex, age and another categorical variable such as reproductive status.
   7. Assessment of the effect produced by population management interventions, through mathematical modelling.
-  8. Prioritize interventions according to the effect they produce, through sensitivity analysis.  
+  8. Prioritization interventions according to the effect they produce, through sensitivity analysis.  
 
 The current workflow is mainly focused on dog populations but also applies to cat populations. Future versions probably will include functions to address particularities of cat populations.
 
@@ -24,8 +24,3 @@ To install the development version, run `install_github('capm', 'oswaldosantos')
 To install the production version, run `install.packages('capm')` in (ideally) RStudio.
 
 If you find any error or have suggestions to improve or include functionality to `capm`, I will glad to know it. Please get in touch so I can better understand your needs.
-
-[Web page of the package](http://oswaldosantos.github.io/capm/)  
-[Documentación en español](https://github.com/oswaldosantos/capm/wiki/1-ESPA%C3%91OL)  
-[Documentação em português](https://github.com/oswaldosantos/capm/wiki/2-PORTUGU%C3%8AS)  
-[English documentation](https://github.com/oswaldosantos/capm/wiki/3-ENGLISH) 
