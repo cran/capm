@@ -37,7 +37,7 @@ PlotPopPyramid <- function(dat = NULL, age.col = NULL, sex.col = NULL, str.col =
   if (!is.numeric(dat[, age.col])) {
     stop('The column containing age information must be numeric.')
   }
-  age <- sex <- ster <- count <- NULL
+  age <- sex <- ster <- count <- unit <- NULL
   if (!is.null(str.col)) {
     if (is.numeric(str.col)) {
       str.col <- names(dat)[str.col]
@@ -102,7 +102,7 @@ PlotPopPyramid <- function(dat = NULL, age.col = NULL, sex.col = NULL, str.col =
   plot.m <- plot.m +
     geom_bar(stat = 'identity') + coord_flip() +
     theme(legend.position = c(1, 1), legend.justification = c(1, 1),
-          plot.margin = unit(c(0.5, 0.5, 0.5, 0), "lines"),
+          plot.margin = unit(c(0.5, 1, 0.5, 0), "lines"),
           axis.ticks.length = unit(0, 'lines'),
           axis.text.y = element_blank(),
           axis.title.y = element_blank(),

@@ -1,7 +1,7 @@
 Package: capm
 Type: Package
 Title: Companion Animal Population Management
-Depends: R (>= 3.1.2)
+Depends: R (>= 3.2.2)
 Imports: deSolve, FME, survey, ggplot2, reshape2, shiny, grid, rgdal,
         maptools, sp
 Description: Quantitative analysis to support companion animal population
@@ -15,13 +15,14 @@ Authors@R: c(person(given='Oswaldo', family='Santos Baquero',
     email='amaku@vps.fmvz.usp.br', role="ctb"),
     person(given='Fernando', family='Ferreira',
     email='fernando@vps.fmvz.usp.br', role="ctb"))
-Version: 0.8.0
-Date: 2015-01-05
+Version: 0.9.0
+Date: 2015-12-06
+RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2015-05-01 14:09:52 UTC; oswaldo
+Packaged: 2015-12-06 14:33:55 UTC; oswaldo
 Author: Oswaldo Santos Baquero [aut, cre],
   Marcos Amaku [ctb],
   Fernando Ferreira [ctb]
 Maintainer: Oswaldo Santos Baquero <oswaldosant@gmail.com>
 Repository: CRAN
-Date/Publication: 2015-05-01 21:55:36
+Date/Publication: 2015-12-06 22:16:54
