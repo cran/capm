@@ -1,6 +1,6 @@
-bd96c8fd0e994fe5f35ca95e4f9bfd63 *DESCRIPTION
-6743bd1bf106190a5cc9141b6a53c06d *NAMESPACE
-f4d9ac0a8595a60b5656f1d366119033 *NEWS
+ef350422d2ddca56449d96e04cbb7ca9 *DESCRIPTION
+8f067338db9f2fd4f109dcd9a42a144c *NAMESPACE
+331cedd6556f456d33b0257d0c8e6bbb *NEWS
 0e13f2e4857b72af918a028d112c665b *R/Calculate2StageSampleSize.R
 5a11cf8acd887e668ad746d534ec5f27 *R/CalculateGlobalSens.R
 0f56da50b61266ddaafd021b960b40b2 *R/CalculateLocalSens.R
@@ -21,12 +21,12 @@ d64f21854a9eb47aaaaa8f55245b25c7 *R/SetRanges.R
 03ca7f0374c1f53d61aacba1b04d5d54 *R/SolveSI.R
 14eb1412828064b9dbba3950370d4fe4 *R/SolveTC.R
 8a95cdc73831b54ff72ec66a62f4d4f2 *R/SummarySurvey.R
-1c823af8819b254a5c4025668f0de457 *R/capm-package.R
+46a2c5d810e90f398c127a085845ae6a *R/capm-package.R
 00828b19bb9f37a1501d2e17d74d863a *README.md
 38cd2274667d035638faae024a15eab4 *data/pilot.rda
 c709d6363bff0fd9eff23a1f422899c0 *data/psu.ssu.rda
 d820c6734e63b53c583fb89ccb851da0 *data/survey.data.rda
-babb203bb361a01b2bc96f3f04a1e03f *inst/CITATION
+1a69a84dc796c6ef7202b707106eac7f *inst/CITATION
 71a0bc553639acbad199a6125f685059 *inst/extdata/santos.dbf
 182f0a1f37f2f37f2c79c8a1b9f65717 *inst/extdata/santos.prj
 dbb6ab1e303a28a1a6161ee0852ffe9d *inst/extdata/santos.shp
@@ -59,7 +59,7 @@ d7a7ff75ad12a813b4719fddde677e48 *man/SampleSystematic.Rd
 924668276ca62bab30a8af331783c909 *man/SolveSI.Rd
 dc791b0be1f7ad84b1bb7f63574a9729 *man/SolveTC.Rd
 e4be2b57840e173644658054d9f7dc51 *man/SummarySurvey.Rd
-5dbcb9e88a6b46cfabf80ee5144471b7 *man/capm-package.Rd
+0738b01bc693a5d8a253f7dd314a424c *man/capm-package.Rd
 ce42ef51a691e75bb1a63154a84e92ff *man/pilot.Rd
 0c8abce66ed61d232110a66c6fc4b43b *man/psu.ssu.Rd
 6c00d8430617a930957e10bc3b2b0239 *man/survey.data.Rd
