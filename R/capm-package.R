@@ -3,10 +3,10 @@
 #' \tabular{ll}{
 #' Package: \tab capm\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.11.0\cr
-#' Date: \tab 2017-05-05\cr
-#' Depends: \tab R (>= 3.4.0)\cr
-#' Imports: \tab deSolve, FME, survey, reshape2, ggplot2, shiny, grid, rgdal, maptools, sp\cr
+#' Version: \tab 0.13.5\cr
+#' Date: \tab 2018-10-02\cr
+#' Depends: \tab R (>= 3.4)\cr
+#' Imports: \tab deSolve, FME, survey, dplyr, tidyr, magrittr, ggplot2, grid, stats, utils, sf\cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' URL: \tab \url{http://oswaldosantos.github.io/capm}\cr
@@ -19,11 +19,16 @@
 #' @docType package
 #' @title The capm Package
 #' @keywords package
-#' @import deSolve FME survey reshape2 ggplot2 shiny
-#' @importFrom rgdal readOGR writeOGR
+#' @import ggplot2
+#' @importFrom survey svydesign calibrate svytotal svymean SE deff cv
+#' @importFrom deSolve ode
+#' @importFrom FME sensFun sensRange
+#' @importFrom dplyr filter group_by group_by_ summarise arrange ungroup mutate left_join select select_ transmute n desc
+#' @importFrom tidyr gather
+#' @importFrom magrittr "%>%"
 #' @importFrom grid viewport pushViewport grid.newpage grid.layout
-#' @importFrom stats aggregate confint qnorm runif sd var
+#' @importFrom stats aggregate confint qnorm runif sd var na.omit relevel
+#' @importFrom circlize circos.clear circos.par chordDiagram circos.trackPlotRegion get.cell.meta.data get.cell.meta.data circos.text circos.axis
 #' @importFrom utils write.table
-#' @importFrom maptools nowrapSpatialLines
-#' @importFrom sp spTransform CRS
+#' @importFrom sf st_read st_write st_transform
 NULL

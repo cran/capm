@@ -9,14 +9,16 @@
 #' @details When \code{N} is defined, \code{psu.ssu} is ignored. If \code{N} has one element, \code{su} must too and the result is a simple systematic selection.  If \code{N} has more than one element, \code{su} must have the same number of elements and each oredered pair represent an strata. Thus, when N has more than one element, the result is a stratified sampling with systematic selection within each strata (see examples).
 #' @references Levy P and Lemeshow S (2008). Sampling of populations: methods and applications, Fourth edition. John Wiley and Sons, Inc.
 #' 
+#' Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
+#' 
 #' \url{http://oswaldosantos.github.io/capm}
 #' @seealso \code{\link{SamplePPS}}.
 #' @export
 #' @examples 
-#' data(city)
+#' data(psu_ssu)
 #' 
 #' ## Two-stage cluster sampling
-#' selected_psu <- SamplePPS(psu.ssu = city[, c("track_id", "hh")], psu = 10)
+#' selected_psu <- SamplePPS(psu.ssu = psu_ssu, psu = 10)
 #' 
 #' # Take a systematic sampling of 5 SSU within each selected PSU.
 #' SampleSystematic(selected_psu, 5, write = FALSE)
@@ -28,6 +30,7 @@
 #' SampleSystematic(su = c("urban" = 50, "rural" = 10),
 #'                  N = c("urban" = 4000, "rural" = 150))
 SampleSystematic <- function(psu.ssu = NULL, su = NULL, N = NULL, write = FALSE, ...) {
+  psu.ssu <- as.data.frame(psu.ssu)
   if (!is.null(N)) {
     sus <- matrix(rep(NA, max(su) * length(su)), ncol = length(N))
     for (i in 1:length(N)) {

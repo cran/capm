@@ -14,7 +14,7 @@ SolveSI(pars = NULL, init = NULL, time = NULL, dd = "b", im = 0,
 
 \item{time}{time sequence for which output is wanted; the first value of times must be the initial time.}
 
-\item{dd}{string equal to \code{b} or \code{d} to define if density-dependece act on birth or death rartes respectively.}
+\item{dd}{string equal to \code{b}, \code{d} or \code{bd} to define if density-dependece act on birth rate, death rarte or both, respectively.}
 
 \item{im}{a number representing the total of immigrants per time unit.}
 
@@ -35,9 +35,7 @@ The implemented model is described by Amaku, et. al., 2009 and the function is a
 Logistic growth models are not intended for scenarios in which population size is greater than carrying capacity and growth rate is negative.
 }
 \examples{
-# Parameters and initial conditions from estimates   
-# obtained in examples section from svysumm function but
-# estimating a proportion insted of a total for births.
+# Parameters and initial conditions.
 pars_solve_si = c(b = 0.245, d = 0.101, 
                  k = 98050, s = 0.048)
 init_solve_si = c(n = 89137, q = 0.198)

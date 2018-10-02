@@ -19,25 +19,25 @@
 #' 
 #' "ms1" (owned sterilized males).
 #'
-#' "f2" (stray intact females).
+#' "f2" (unowned intact females).
 #' 
-#' "fs2" (stray sterilized females).
+#' "fs2" (unowned sterilized females).
 #' 
-#' "m2" (stray intact males).
+#' "m2" (unowned intact males).
 #' 
-#' "ms2" (stray sterilized males). 
+#' "ms2" (unowned sterilized males). 
 #' 
 #' "n1" (owned intact animals).
 #' 
 #' "ns1" (owned sterilized animals).
 #' 
-#' "n2" (stray intact animals).
+#' "n2" (unowned intact animals).
 #' 
-#' "ns2" (stray sterilized animals).
+#' "ns2" (unowned sterilized animals).
 #' 
 #' "N1" (owned animals).
 #' 
-#' "N2" (stray animals).
+#' "N2" (unowned animals).
 #' 
 #' "N" (total population).
 #' 
@@ -71,8 +71,7 @@
 #' @param x.label string with the name for x axis.
 #' @param y.label string with the name for y axis.
 #' @param legend.label string with the name of the legend, for plots of \code{\link{SolveIASA}} output.
-#' @param scenarios.label string with the names for the scenarios of \code{\link{SolveIASA}} output, determined by the immigartion rates. Within the string, use the expression __ in the location where you want to appear the value of the immigartion rate. For line breaking, use \code{\\n} (see examples).
-#' @param pop value indicating the output of \code{\link{SolveIASA}} to be ploted. When \code{NULL} (default), plots for owned and stray populations under scenarios created by immigartion rate are created. If \code{1}, the plots of owned population for the minimum immigartion rate are ploted. When \code{2}, the plots of stray population for the minimum immigartion rate are ploted. If \code{3}, the plots of owned population for the maximum immigartion rate are ploted. When \code{4}, the plots of owned population for the maximum immigartion rate are ploted.
+#' @param pop value indicating the output of \code{\link{SolveIASA}} to be ploted. When \code{NULL} (default), plots for owned and unowned populations under scenarios created by immigartion rate are created. If \code{1}, the plots of owned population for the minimum immigartion rate are ploted. When \code{2}, the plots of unowned population for the minimum immigartion rate are ploted. If \code{3}, the plots of owned population for the maximum immigartion rate are ploted. When \code{4}, the plots of owned population for the maximum immigartion rate are ploted.
 #' @details Font size of saved plots is usually different to the font size seen in graphic browsers. Before changing font sizes, see the final result in saved (or preview) plots.
 #'  
 #' Other details of the plot can be modifyed using appropriate functions from \code{ggplot2} package.
@@ -82,48 +81,41 @@
 #' @seealso \link[deSolve]{plot.deSolve}.
 #' @export
 #' @examples
-#' ### IASA model
+#' ## IASA model
 #' 
 #' ## Parameters and intial conditions.
-#' pars_solve_iasa = c(
-#'    b1 = 21871, b2 = 4374,
-#'    df1 = 0.104, dm1 = 0.098, df2 = 0.125, dm2 = 0.118,
-#'    sf1 = 0.069, sf2 = 0.05, sm1 = 0.028, sm2 = 0.05,
-#'    k1 = 98050, k2 = 8055, h1 = 1, h2 = 0.5,
-#'    a = 0.054, alpha = 0.1, v = 0.2, z = 0.1)
-#'    
-#' init_solve_iasa = c(
-#'    f1 = 33425, fs1 = 10865,
-#'    m1 = 38039, ms1 = 6808,
-#'    f2 = 3343, fs2 = 109,
-#'    m2 = 3804, ms2 = 68)
-#'    
+#' data(dogs)
+#' dogs_iasa <- GetDataIASA(dogs,
+#'                          destination.label = "Pinhais",
+#'                          total.estimate = 50444)
 #' 
 #' # Solve for point estimates.
-#' solve_iasa_pt <- SolveIASA(pars = pars_solve_iasa, 
-#'                           init = init_solve_iasa, 
-#'                           time = 0:10, method = 'rk4')
+#' solve_iasa_pt <- SolveIASA(pars = dogs_iasa$pars,
+#'                            init = dogs_iasa$init,
+#'                            time = 0:15,
+#'                            alpha.owned = TRUE,
+#'                            method = 'rk4')
+# '
+#' solve_iasa_rg <- SolveIASA(pars = dogs_iasa$pars,
+#'                            init = dogs_iasa$init, 
+#'                            time = 0:10,
+#'                            alpha.owned = TRUE,
+#'                            s.range = seq(0, .4, l = 15), 
+#'                            a.range = c(0, .2), 
+#'                            alpha.range = c(0, .05),
+#'                            v.range = c(0, .1),
+#'                            method = 'rk4')
 #' 
-#' # Solve for parameter ranges.
-#' solve_iasa_rg <- SolveIASA(pars = pars_solve_iasa, 
-#'                           init = init_solve_iasa, 
-#'                           time = 0:10,
-#'                           s.range = seq(0, .4, l = 15), 
-#'                           a.range = c(0, .2), 
-#'                           alpha.range = c(0, .2),
-#'                           v.range = c(0, .1),
-#'                           method = 'rk4')
-#'                 
-#' ## Plot stray population sizes using point estimates
-#' ## Not run
+#' ## Plot unowned population sizes using point estimates
+#' \dontrun{
 #' PlotModels(solve_iasa_pt, variable = "ns2")
 #' 
 #' ## Plot all scenarios and change the label for the scenarios.
 #' ## Not run
 #' PlotModels(solve_iasa_rg, variable = "ns")
-#' ## End(Not run)
+#' }
 #' 
-PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c('cadetblue1', 'yellow', 'red'), col2 = c('blue', 'darkgreen', 'darkred'), x.label = 'Years', y.label = NULL, scenarios.label = 'v = (__ * owned carrying capacity)', legend.label = NULL, pop = NULL) {
+PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c('cadetblue1', 'yellow', 'red'), col2 = c('blue', 'darkgreen', 'darkred'), x.label = 'Years', y.label = NULL, legend.label = NULL, pop = NULL) {
   if (class(model.out) != 'capmModels') {
     stop('model.out must be of class "capmModels".')
   }
@@ -137,10 +129,11 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
       tmp <- ggplot(model.out$results, 
                     aes_string(x = 'time', y = variable)) + 
         geom_line(colour = col) +
-        xlab(x.label)
+        xlab(x.label) +
+        theme_minimal()
       if (!is.null(y.label)) {
-        tmp + ylab(y.label) +
-          ylim(0, max(model.out$results[ , variable]))
+        tmp + ylab(y.label) #+
+          #ylim(0, max(model.out$results[ , variable]))
       } else {
         if (variable == 'n') {
           y.label <- 'Population size'
@@ -148,8 +141,8 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
         if (variable == 'q') {
           y.label <- 'Proportion of sterilized animals'
         }
-        tmp + ylab(y.label) +
-          ylim(0, max(model.out$results[ , variable]))
+        tmp + ylab(y.label) #+
+          #ylim(0, max(model.out$results[ , variable]))
       }
     }  else {
       if (is.null(y.label)) {
@@ -179,6 +172,7 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
                   length.out = 5) / (10 ^ scl), 1),
             low = col1,
             high = col2) +
+          theme_minimal() +
           theme(legend.position = 'top',
                 legend.title = element_text(size = 12))
       } else {
@@ -197,6 +191,7 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
             limits = c(0, 1), breaks = seq(0 , 1, .2),
             low = rev(col2), 
             high = rev(col1)) +
+          theme_minimal() +
           theme(legend.position = 'top', 
                 legend.title = element_text(size = 12),
                 legend.text = element_text(angle = 90))
@@ -216,10 +211,11 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
         tmp <- ggplot(model.out$results, 
                       aes_string(x = 'time', y = variable)) + 
           geom_line(colour = col) +
-          xlab(x.label)
+          xlab(x.label) +
+          theme_minimal()
         if (!is.null(y.label)) {
-          tmp + ylab(y.label) +
-            ylim(0, max(model.out$results[ , variable]))
+          tmp + ylab(y.label) #+
+            #ylim(0, max(model.out$results[ , variable]))
         } else {
           if (variable == 'f1') {
             yla <- 'Owned intact females'
@@ -234,16 +230,16 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
             yla <- 'Owned sterilized males'
           }
           if (variable == 'f2') {
-            yla <- 'Stray intact females'
+            yla <- 'Unowned intact females'
           }
           if (variable == 'fs2') {
-            yla <- 'Stray sterilized females'
+            yla <- 'Unowned sterilized females'
           }
           if (variable == 'm2') {
-            yla <- 'Stray intact males'
+            yla <- 'Unowned intact males'
           }
           if (variable == 'ms2') {
-            yla <- 'Stray sterilized males'
+            yla <- 'Unowned sterilized males'
           }
           if (variable == 'n1') {
             yla <- 'Owned intact animals'
@@ -252,22 +248,22 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
             yla <- 'Owned sterilized animals'
           }
           if (variable == 'n2') {
-            yla <- 'Stray intact animals'
+            yla <- 'Unowned intact animals'
           }
           if (variable == 'ns2') {
-            yla <- 'Stray sterilized animals'
+            yla <- 'Unowned sterilized animals'
           }
           if (variable == 'N1') {
             yla <- 'Owned animals'
           }
           if (variable == 'N2') {
-            yla <- 'Stray animals'
+            yla <- 'Unowned animals'
           }
           if (variable == 'N') {
             yla <- 'Total pulation size'
           }
-          tmp + ylab(yla) +
-            ylim(0, max(model.out$results[ , variable]))
+          tmp + ylab(yla) #+
+            #ylim(0, max(model.out$results[ , variable]))
         }
       } else {
         if (length(intersect(variable, 
@@ -279,37 +275,37 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
         if (is.null(legend.label)) {
           if (variable == 'f') {
             legend.label <- c('Owned\nintact\nfemales', 
-                              'Stray\nintact\nfemales')
+                              'Unowned\nintact\nfemales')
           }
           if (variable == 'fs') {
             legend.label <- c('Owned\nsterilized\nfemales', 
-                              'Stray\nsterilized\nfemales')
+                              'Unowned\nsterilized\nfemales')
           }
           if (variable == 'm') {
             legend.label <- c('Owned\nintact\nmales', 
-                              'Stray\nintact\nmales')
+                              'Unowned\nintact\nmales')
           }
           if (variable == 'ms') {
             legend.label <- c('Owned\nsterilized\nmales', 
-                              'Stray\nsterilized\nmales')
+                              'Unowned\nsterilized\nmales')
           }
           if (variable == 'n') {
             legend.label <- c('Owned\nintact\nanimals', 
-                              'Stray\nintact\nanimals')
+                              'Unowned\nintact\nanimals')
           }
           if (variable == 'ns') {
             legend.label <- c('Owned\nsterilized\nanimals', 
-                              'Stray\nsterilized\nanimals')
+                              'Unowned\nsterilized\nanimals')
           }
           if (variable == 'N') {
             legend.label <- c('Owned\nanimals', 
-                              'Stray\nanimals')
+                              'Unowned\nanimals')
           }
         }
-        model.out$results[, 'a'] <- 
-          paste('a', '==', round(model.out$results[, 'a'], 2))
-        model.out$results[, 'alpha'] <- 
-          paste('alpha', '==', round(model.out$results[, 'alpha'], 2))
+        model.out$results[, 'a'] <- round(model.out$results[, 'a'], 2)
+          #paste('a', '==', round(model.out$results[, 'a'], 2))
+        model.out$results[, 'alpha'] <- round(model.out$results[, 'alpha'], 2)
+          #paste('alpha', '==', round(model.out$results[, 'alpha'], 2))
         if (is.null(y.label)) {
           y.label <- 'Sterilization rate'
         }
@@ -329,10 +325,7 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
                                 fill = variable)) +
                      xlab(x.label) + 
                      ylab(y.label) +
-                     ggtitle(
-                       gsub('__', unique(
-                         model.out$results[, 'v'])[i],
-                         scenarios.label)) +
+                     ggtitle(paste('v:', unique(model.out$results[, 'v'])[i])) +
                      geom_raster() + 
                      scale_fill_continuous(
                        name = paste0(legend.label[j], '\n',
@@ -349,14 +342,15 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
                            length.out = 5) / (10 ^ scl), 1),
                        low = col1,
                        high = col2) +
+                     theme_minimal() +
                      theme(legend.position = 'right',
                            legend.title = 
                              element_text(size = 10, face = 'plain'),
                            plot.margin = 
-                             unit(c(.5, 0, 0, 0), 'lines'),
+                             unit(c(.2, .2, .5, .2), 'lines'),
                            plot.title = 
-                             element_text(size = 12, hjust = .5)) +
-                     facet_grid(alpha ~ a, labeller = label_parsed)
+                             element_text(size = 10, hjust = .5)) +
+                     facet_grid(alpha ~ a, labeller = label_both)
             )
           }
         }
@@ -398,10 +392,11 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
           tmp <- ggplot(model.out$results, 
                         aes_string(x = 'time', y = variable)) + 
             geom_line(colour = col) +
-            xlab(x.label)
+            xlab(x.label) +
+            theme_minimal()
           if (!is.null(y.label)) {
-            tmp + ylab(y.label) +
-              ylim(0, max(model.out$results[ , variable]))
+            tmp + ylab(y.label) #+
+              #ylim(0, max(model.out$results[ , variable]))
           } else {
             if (variable == 'n') {
               y.label <- 'Fertile animals'
@@ -412,8 +407,8 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
             if (variable == 'u') {
               y.label <- 'Sterilized animals (cumulative)'
             }
-            tmp + ylab(y.label) +
-              ylim(0, max(model.out$results[ , variable]))
+            tmp + ylab(y.label) #+
+              #ylim(0, max(model.out$results[ , variable]))
           }
         } else {
           if (is.null(y.label)) {
@@ -454,6 +449,7 @@ PlotModels <- function(model.out = NULL, variable = NULL, col = 'red', col1 = c(
                     length.out = 5) / (10 ^ scl), 1),
               low = col1,
               high = col2) +
+            theme_minimal() +
             theme(legend.position = 'top',
                   legend.title = element_text(size = 12),
                   legend.text = element_text(angle = 90),

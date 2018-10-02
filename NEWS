@@ -1,7 +1,132 @@
+capm 0.13.5
+===========
+
+* Remove shiny from imports.
+
+capm 0.13.4
+===========
+
+* Updated examples.
+
+capm 0.13.3
+===========
+
+* PlotPopPyramid: support for ages in a character or factor vector.
+
+
+capm 0.13.2
+===========
+
+* FreqTab: bug fix to deal with NAs.
+
+capm 0.13.1
+===========
+
+* Calculate2StageSampleSize: deprecated.
+
+capm 0.13.0
+===========
+
+* GraphicInterface: removed.
+
+capm 0.12.15
+============
+
+* GetDataIASA and PlotImmigrationFlow: new functions.
+
+capm 0.12.14
+============
+
+* FreqTab: Support for contingency frequencies.
+
+capm 0.12.13
+============
+
+* PlotPopPyramid: new appearance and simplified code.
+
+capm 0.12.12
+============
+
+* More selective imports.
+
+capm 0.12.11
+===========
+
+* SolveIASA: truncate non-negative values.
+
+capm 0.12.10
+===========
+
+* New functions: FreqTab and PlotSHHxSpecies.
+
+* theme_minimal to all plot functions.
+
+capm 0.12.9
+===========
+
+* SolveIASA: New argument dd2.
+
+capm 0.12.8
+===========
+
+* SolveSI: additional option to specify the argument dd.
+
+capm 0.12.7
+===========
+
+* SolveIASA: bug fixed, related to alpha term.
+
+capm 0.12.6
+===========
+
+* Default colors changed. 
+
+* CalculatePopChange: updated to accept outputs from CalculateGlobalSens.
+
+capm 0.12.5
+===========
+
+* PlotPopPyramid: support for non numeric stages.
+
+capm 0.12.4
+===========
+
+* SolveIASA: new argument alpha.owned.
+
+capm 0.12.3
+===========
+
+* CalculateStratifiedSampleSize: bug fixed.
+
+capm 0.12.2
+===========
+
+* PlotModels and PlotGlobalSens: default ylim.
+
+capm 0.12.1
+===========
+
+* SolveIasa: immigration rate defined in terms of N1.
+
+capm 0.12.0
+===========
+
+* MapkmlPSU: now based on sf package.
+
+capm 0.11.2
+===========
+
+* SummarySurvey: "." replaced by "_" in the prefix of estimated variables.
+
+capm 0.11.1
+===========
+
+* DesignSurvey: First-stage sampling fraction redefined.
+
 capm 0.11.0
 ===========
 
-* DesignSurvey: allos calibration using a population total.
+* DesignSurvey: allows calibration using a population total.
 
 capm 0.10.3
 ===========

@@ -6,9 +6,8 @@
 \usage{
 PlotModels(model.out = NULL, variable = NULL, col = "red",
   col1 = c("cadetblue1", "yellow", "red"), col2 = c("blue", "darkgreen",
-  "darkred"), x.label = "Years", y.label = NULL,
-  scenarios.label = "v = (__ * owned carrying capacity)",
-  legend.label = NULL, pop = NULL)
+  "darkred"), x.label = "Years", y.label = NULL, legend.label = NULL,
+  pop = NULL)
 }
 \arguments{
 \item{model.out}{output of one of the function previously mentioned.}
@@ -31,25 +30,25 @@ For \code{\link{SolveIASA}} function using only point estimates:
 
 "ms1" (owned sterilized males).
 
-"f2" (stray intact females).
+"f2" (unowned intact females).
 
-"fs2" (stray sterilized females).
+"fs2" (unowned sterilized females).
 
-"m2" (stray intact males).
+"m2" (unowned intact males).
 
-"ms2" (stray sterilized males). 
+"ms2" (unowned sterilized males). 
 
 "n1" (owned intact animals).
 
 "ns1" (owned sterilized animals).
 
-"n2" (stray intact animals).
+"n2" (unowned intact animals).
 
-"ns2" (stray sterilized animals).
+"ns2" (unowned sterilized animals).
 
 "N1" (owned animals).
 
-"N2" (stray animals).
+"N2" (unowned animals).
 
 "N" (total population).
 
@@ -87,11 +86,9 @@ For \code{\link{SolveTC}} function:
 
 \item{y.label}{string with the name for y axis.}
 
-\item{scenarios.label}{string with the names for the scenarios of \code{\link{SolveIASA}} output, determined by the immigartion rates. Within the string, use the expression __ in the location where you want to appear the value of the immigartion rate. For line breaking, use \code{\\n} (see examples).}
-
 \item{legend.label}{string with the name of the legend, for plots of \code{\link{SolveIASA}} output.}
 
-\item{pop}{value indicating the output of \code{\link{SolveIASA}} to be ploted. When \code{NULL} (default), plots for owned and stray populations under scenarios created by immigartion rate are created. If \code{1}, the plots of owned population for the minimum immigartion rate are ploted. When \code{2}, the plots of stray population for the minimum immigartion rate are ploted. If \code{3}, the plots of owned population for the maximum immigartion rate are ploted. When \code{4}, the plots of owned population for the maximum immigartion rate are ploted.}
+\item{pop}{value indicating the output of \code{\link{SolveIASA}} to be ploted. When \code{NULL} (default), plots for owned and unowned populations under scenarios created by immigartion rate are created. If \code{1}, the plots of owned population for the minimum immigartion rate are ploted. When \code{2}, the plots of unowned population for the minimum immigartion rate are ploted. If \code{3}, the plots of owned population for the maximum immigartion rate are ploted. When \code{4}, the plots of owned population for the maximum immigartion rate are ploted.}
 }
 \description{
 Plot results of one of the following functions: \code{\link{SolveIASA}}, \code{\link{SolveSI}} or \code{\link{SolveTC}}.
@@ -102,46 +99,38 @@ Font size of saved plots is usually different to the font size seen in graphic b
 Other details of the plot can be modifyed using appropriate functions from \code{ggplot2} package.
 }
 \examples{
-### IASA model
+## IASA model
 
 ## Parameters and intial conditions.
-pars_solve_iasa = c(
-   b1 = 21871, b2 = 4374,
-   df1 = 0.104, dm1 = 0.098, df2 = 0.125, dm2 = 0.118,
-   sf1 = 0.069, sf2 = 0.05, sm1 = 0.028, sm2 = 0.05,
-   k1 = 98050, k2 = 8055, h1 = 1, h2 = 0.5,
-   a = 0.054, alpha = 0.1, v = 0.2, z = 0.1)
-   
-init_solve_iasa = c(
-   f1 = 33425, fs1 = 10865,
-   m1 = 38039, ms1 = 6808,
-   f2 = 3343, fs2 = 109,
-   m2 = 3804, ms2 = 68)
-   
+data(dogs)
+dogs_iasa <- GetDataIASA(dogs,
+                         destination.label = "Pinhais",
+                         total.estimate = 50444)
 
 # Solve for point estimates.
-solve_iasa_pt <- SolveIASA(pars = pars_solve_iasa, 
-                          init = init_solve_iasa, 
-                          time = 0:10, method = 'rk4')
+solve_iasa_pt <- SolveIASA(pars = dogs_iasa$pars,
+                           init = dogs_iasa$init,
+                           time = 0:15,
+                           alpha.owned = TRUE,
+                           method = 'rk4')
+solve_iasa_rg <- SolveIASA(pars = dogs_iasa$pars,
+                           init = dogs_iasa$init, 
+                           time = 0:10,
+                           alpha.owned = TRUE,
+                           s.range = seq(0, .4, l = 15), 
+                           a.range = c(0, .2), 
+                           alpha.range = c(0, .05),
+                           v.range = c(0, .1),
+                           method = 'rk4')
 
-# Solve for parameter ranges.
-solve_iasa_rg <- SolveIASA(pars = pars_solve_iasa, 
-                          init = init_solve_iasa, 
-                          time = 0:10,
-                          s.range = seq(0, .4, l = 15), 
-                          a.range = c(0, .2), 
-                          alpha.range = c(0, .2),
-                          v.range = c(0, .1),
-                          method = 'rk4')
-                
-## Plot stray population sizes using point estimates
-## Not run
+## Plot unowned population sizes using point estimates
+\dontrun{
 PlotModels(solve_iasa_pt, variable = "ns2")
 
 ## Plot all scenarios and change the label for the scenarios.
 ## Not run
 PlotModels(solve_iasa_rg, variable = "ns")
-## End(Not run)
+}
 
 }
 \references{

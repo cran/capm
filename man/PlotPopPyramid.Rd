@@ -5,9 +5,9 @@
 \title{Population PlotPopPyramid}
 \usage{
 PlotPopPyramid(dat = NULL, age.col = NULL, sex.col = NULL,
-  str.col = NULL, x.label = "Total", stage.label = "Years",
-  legend.label = "Sterilized", inner.color = "Gold2",
-  outer.color = "DarkOliveGreen", label.size = 13)
+  str.col = NULL, str.tip = NULL, x.label = "Count",
+  stage.label = "Years", legend.label = "Sterilized",
+  inner.color = "LightBlue", outer.color = "DarkRed", label.size = 13)
 }
 \arguments{
 \item{dat}{\code{\link{data.frame}}.}
@@ -18,15 +18,17 @@ PlotPopPyramid(dat = NULL, age.col = NULL, sex.col = NULL,
 
 \item{str.col}{\code{dat} column that has two unique values representing the reproductive status of individuals (see Details).}
 
+\item{str.tip}{string with the category of \code{str.col} to place at tip of the bars.}
+
 \item{x.label}{string to be used as a label for the x axis. If undefined, \code{x.label} is equal to "Total" (see Details).}
 
 \item{stage.label}{a string to be used as a label for the ages or stage categories. If undefined, \code{stage.label} is equal to "Years" (see Details).}
 
 \item{legend.label}{a string to be used as a label for the legend. If undefined, \code{legend.label} is equal to "Sterilized".}
 
-\item{inner.color}{any valid way to specify colors. When \code{str.col} is \code{NULL}, \code{inner.color} is the color of bars. When \code{str.col} is not \code{NULL}, \code{innercolor} is the inner color of bars. If non defined, \code{inner.color} is equal to \code{"Gold2"}.}
+\item{inner.color}{any valid specification of a color. When \code{str.col} is not \code{NULL}, \code{inner.color} is the color of inner bars.}
 
-\item{outer.color}{any valid way to specify colors. When \code{str.col} is \code{NULL}, \code{outer.color} is ignored. When \code{str.col} is not \code{NULL}, \code{outer.color} is the outer color of bars. If non defined, \code{outercolor} is equal to \code{"DarkOliveGreen"}.}
+\item{outer.color}{any valid way specification of a color. When \code{str.col} is \code{NULL}, \code{outer.color} is the default color. When \code{str.col} is not \code{NULL}, \code{outer.color} is the outer color of bars.}
 
 \item{label.size}{string to define the font size for labels.}
 }
@@ -53,18 +55,40 @@ Other details of the plot can be modifyed using appropriate functions from \code
 In companion animals population surveys, some age categories might be empty. One difference between \code{PlotPopPyramid} and \code{pryramid.plot} is that the first does not drop empty age categories.
 }
 \examples{
-data(cluster_sample_animals)
-dogs <- cluster_sample_animals[complete.cases(cluster_sample_animals), ]
-dogs <- dogs[dogs$species == "dog", ]
+data(dogs)
+
 PlotPopPyramid(dogs,
                age.col = "age",
                sex.col = "sex",
                str.col = "sterilized")
+
 PlotPopPyramid(dogs,
                age.col = "age",
                sex.col = "sex")
 
+## Merge age categories
+pp_age <- cut(c(dogs$age, dogs$age3),
+               breaks = c(0, 1, 3, 5, 7, 9, 11, 13, 15,
+                          max(c(dogs$age, dogs$age3), na.rm = TRUE)),
+               labels = c("<1", "1-3", "3-5", "5-7", "7-9",
+                          "9-11", "11-13", "13-15", ">15"),
+               include.lowest = TRUE)
+pp_sex <- c(dogs$sex, dogs$sex3)
+pp_ster <- c(dogs$sterilized, dogs$sterilized3)
+pp <- data.frame(age = pp_age, sex = pp_sex, sterilized = pp_ster)
+
+PlotPopPyramid(pp,
+              age.col = "age",
+              sex.col = "sex",
+              str.col = "sterilized")
+
+PlotPopPyramid(pp,
+              age.col = "age",
+              sex.col = "sex")
+
 }
 \references{
+Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
+
 \url{http://oswaldosantos.github.io/capm}
 }

@@ -4,8 +4,9 @@
 \alias{SolveIASA}
 \title{Modelling of immigration, abandonment, sterilization and adoption of companion animals}
 \usage{
-SolveIASA(pars = NULL, init = NULL, time = NULL, s.range = NULL,
-  a.range = NULL, alpha.range = NULL, v.range = NULL, s.fm = TRUE, ...)
+SolveIASA(pars = NULL, init = NULL, time = NULL, alpha.owned = NULL,
+  s.range = NULL, a.range = NULL, alpha.range = NULL, v.range = NULL,
+  s.fm = TRUE, ...)
 }
 \arguments{
 \item{pars}{a named \code{\link{vector}} of length 21, with point estimates of model parameters (see details).}
@@ -14,28 +15,30 @@ SolveIASA(pars = NULL, init = NULL, time = NULL, s.range = NULL,
 
 \item{time}{time sequence for which output is wanted; the first value of times must be the initial time.}
 
+\item{alpha.owned}{\code{\link{logical}}. If \code{TRUE}, adoption rate is relative to the owned population (proportion of the owned population). If \code{FALSE}, it is relative to the unowned population.}
+
 \item{s.range}{optional sequence (between 0 and 1) of the sterilization rates to be simulated.}
 
 \item{a.range}{optional \code{\link{vector}} of length 2, with range (ie, confidence interval) of abandonment rates to be assessed. If given, the rates evaluated are those specified by the argument plus the point estimate given in \code{pars}.}
 
 \item{alpha.range}{optional \code{\link{vector}} of length 2, with range (ie, confidence interval) of adoption rates to be assessed. If given, the rates evaluated are those specified by the argument plus the point estimate given in \code{pars}.}
 
-\item{v.range}{optional \code{\link{vector}} of length 2, with range of values of immigration rates to be assessed. This must be expressed as a percentage of owned animals carrying capacity.}
+\item{v.range}{optional \code{\link{vector}} of length 2, with range of values of immigration rates to be assessed.}
 
-\item{s.fm}{logical. If \code{TRUE}, s.range is used for females and males and if \code{FALSE}, it is used only for females (for males, the point estimate given in \code{pars} is used.)}
+\item{s.fm}{logical. If \code{TRUE}, s.range is used for females and males and if \code{FALSE}, it is used for only females (for males, the point estimate given in \code{pars} is used.)}
 
 \item{...}{further arguments passed to \link[deSolve]{ode} function.}
 }
 \value{
-\code{\link{list}}. The first element, \code{name}, is a string with the name of the function, the second element, \code{model}, is the model function. The third, fourth and fifth elements are vectors (\code{pars}, \code{init}, \code{time}, respectively) containing the \code{pars}, \code{init} and \code{time} arguments of the function. The sixth element \code{results} is a \code{\link{data.frame}} with up to as many rows as elements in time. The first column contain the time and subsequent columns contain the size of specific subpopulations, named according to conventions above. The \code{group} column differentiate between owned and strays. When *.range arguments are given, the last fourth columsn specify their instances.
+\code{\link{list}}. The first element, \code{name}, is a string with the name of the function, the second element, \code{model}, is the model function. The third, fourth and fifth elements are vectors (\code{pars}, \code{init}, \code{time}, respectively) containing the \code{pars}, \code{init} and \code{time} arguments of the function. The sixth element \code{results} is a \code{\link{data.frame}} with up to as many rows as elements in time. The first column contain the time and subsequent columns contain the size of specific subpopulations, named according to conventions above. The \code{group} column differentiate between owned and unowned. When *.range arguments are given, the last fourth columsn specify their instances.
 }
 \description{
-System of ordinary differential equations to simulate the effect of immigration of owned dogs, abandonment, sterilization of owned and stray dogs and adoption, on population dynamics.
+System of ordinary differential equations to simulate the effect of immigration of owned dogs, abandonment, sterilization of owned and unowned dogs and adoption, on population dynamics.
 }
 \details{
 The implemented model is described by Baquero, et. al., 2016 and the function is a wrapper around the defaults of \link[deSolve]{ode} function, whose help page must be consulted for details.
 
-The \code{pars} argument must contain named values, using the following conventions: \code{1}: owned animals; \code{2}: stray animals; \code{f}: females; \code{m}: males. Then:
+The \code{pars} argument must contain named values, using the following conventions: \code{1}: owned animals; \code{2}: unowned animals; \code{f}: females; \code{m}: males. Then:
 
  
 \code{b1} and \code{b2}: number of births.
@@ -56,7 +59,7 @@ The \code{pars} argument must contain named values, using the following conventi
 
 \code{z}: proportion of sterilized immigrants.
 
-The \code{init} argument must contain named values for the inital number of animals, using the following conventions: \code{1}: owned animals; \code{2}: stray animals; \code{f}: females; \code{m}: males; and \code{s}: sterilized. Then, the names are:
+The \code{init} argument must contain named values for the inital number of animals, using the following conventions: \code{1}: owned animals; \code{2}: unowned animals; \code{f}: females; \code{m}: males; and \code{s}: sterilized. Then, the names are:
 
 \code{f1}, \code{fs1}, \code{m1}, \code{ms1}, \code{f2}, \code{fs2}, \code{m2} and \code{ms2}.
 
@@ -68,41 +71,33 @@ Logistic growth models are not intended for scenarios in which
 population size is greater than carrying capacity and growth rate is negative.
 }
 \examples{
-# Parameters and initial conditions.
-pars_solve_iasa = c(
-   b1 = 21871, b2 = 4374,
-   df1 = 0.104, dm1 = 0.098, df2 = 0.125, dm2 = 0.118,
-   sf1 = 0.069, sf2 = 0.05, sm1 = 0.028, sm2 = 0.05,
-   k1 = 98050, k2 = 8055, h1 = 1, h2 = 0.5,
-   a = 0.054, alpha = 0.1, v = 0.2, z = 0.1)
-   
-init_solve_iasa = c(
-   f1 = 33425, fs1 = 10865,
-   m1 = 38039, ms1 = 6808,
-   f2 = 3343, fs2 = 109,
-   m2 = 3804, ms2 = 68)
-   
+## Parameters and intial conditions.
+data(dogs)
+dogs_iasa <- GetDataIASA(dogs,
+                         destination.label = "Pinhais",
+                         total.estimate = 50444)
 
 # Solve for point estimates.
-solve_iasa_pt <- SolveIASA(pars = pars_solve_iasa, 
-                          init = init_solve_iasa, 
-                          time = 0:8, method = "rk4")
-
-# Solve for parameter ranges.
-solve_iasa_rg <- SolveIASA(pars = pars_solve_iasa, 
-                          init = init_solve_iasa, 
-                          time = 0:8,
-                          s.range = seq(0, .4, l = 15), 
-                          a.range = c(0, .2), 
-                          alpha.range = c(0, .2),
-                          v.range = c(0, .1),
-                          method = "rk4")
+solve_iasa_pt <- SolveIASA(pars = dogs_iasa$pars,
+                           init = dogs_iasa$init,
+                           time = 0:15,
+                           alpha.owned = TRUE,
+                           method = 'rk4')
+solve_iasa_rg <- SolveIASA(pars = dogs_iasa$pars,
+                           init = dogs_iasa$init, 
+                           time = 0:10,
+                           alpha.owned = TRUE,
+                           s.range = seq(0, .4, l = 15), 
+                           a.range = c(0, .2), 
+                           alpha.range = c(0, .05),
+                           v.range = c(0, .1),
+                           method = 'rk4')
 
 }
 \references{
-\url{http://oswaldosantos.github.io/capm}
-
 Baquero, O. S., Akamine, L. A., Amaku, M., & Ferreira, F. (2016). Defining priorities for dog population management through mathematical modeling. Preventive veterinary medicine, 123, 121-127.
+
+\url{http://oswaldosantos.github.io/capm}
 }
 \seealso{
 \link[deSolve]{ode}.

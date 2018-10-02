@@ -5,8 +5,8 @@
 \title{Survey design}
 \usage{
 DesignSurvey(sample = NULL, psu.ssu = NULL, psu.col = NULL,
-  ssu.col = NULL, cal.col = NULL, psu.2cd = NULL, N = NULL,
-  strata = NULL, cal.N = NULL, ...)
+  ssu.col = NULL, cal.col = NULL, N = NULL, strata = NULL,
+  cal.N = NULL, ...)
 }
 \arguments{
 \item{sample}{\code{\link{data.frame}} with sample observations. for two-stage cluster designs, one of the columns must contain unique identifiers for PSU and another column must contain unique identifiers for Secondary Sampling Units (SSU).}
@@ -18,8 +18,6 @@ DesignSurvey(sample = NULL, psu.ssu = NULL, psu.col = NULL,
 \item{ssu.col}{the column of \code{sample} containing the ssu identifiers (for two-stage cluster designs). It is used only for two-stage cluster designs.}
 
 \item{cal.col}{the column of \code{sample} with the variable to calibrate estimates. It must be used together with \code{cal.N}.}
-
-\item{psu.2cd}{for two-stage cluster designs, value indicating the number of psu included (for PSU included more than once, each must be counted).}
 
 \item{N}{for simple designs, a \code{\link{numeric}} value representing the total of sampling units in the population. for a stratified design, it is a column of \code{sample} indicating, for each observation, the total of sampling units in its respective strata. \code{N} is ignored in two-stage cluster designs.}
 
@@ -39,33 +37,43 @@ A wraper for \code{\link{svydesign}} function from the survey package, to define
 For two-stage cluster designs, a PSU appearing in both \code{psu.ssu} and in \code{sample} must have the same identifier. SSU identifiers must be unique but can appear more than once if there is more than one observation per SSU. \code{sample} argument must have just the varibles to be estimated plus the variables required to define the design (two-stage cluster or stratified). \code{cal.col} and \code{cal.N} are needed only if estimates will be calibrated. The calibration is based on a population total.
 }
 \examples{
-data(city)
-data(hh)
-## Two-stage cluster design that included 65 PSU.
-data(cluster_sample)
-cluster_sample2 <- cluster_sample[complete.cases(cluster_sample), c(1:2, 8:10)]
-DesignSurvey(sample = cluster_sample2,
-             psu.ssu = city[, c("track_id", "hh")],
-             psu.col = 1, ssu.col = 2, psu.2cd = 65,
-             cal.col = 3, cal.N = sum(hh$persons))
-#'
-## Simple design.
-data(sys_sample)
-sys_sample2 <- sys_sample[complete.cases(sys_sample), 7:9]
-DesignSurvey(sample = sys_sample[, -c(1:2)], N = sum(city$hh))
+data("cluster_sample")
+data("psu_ssu")
 
-## Assuming that systematic_sample is a stratified design.
-# Hypothetical strata
-strat <- sys_sample2
-strat$strat <- sample(c("urban", "rural"), nrow(strat), prob = c(.95, .05),
-                      replace = TRUE)
-strat$strat_size <- round(sum(city$hh) * .95)
-strat$strat_size[strat$strat == "rural"] <- round(sum(city$hh) * .05)
-DesignSurvey(strat, N = "strat_size", strata = "strat")
+## Calibrated two-stage cluster design
+design <- DesignSurvey(na.omit(cluster_sample),
+                       psu.ssu = psu_ssu,
+                       psu.col = "census_tract_id",
+                       ssu.col = "interview_id",
+                       cal.col = "number_of_persons",
+                       cal.N = 129445)
+
+## Simple design
+# If data in cluster_sample were from a simple design:
+design <- DesignSurvey(na.omit(cluster_sample), 
+                       N = sum(psu_ssu$hh),
+                       cal.N = 129445)
+
+## Stratified design
+# Simulate strata and assume that the data in cluster_design came
+# from a stratified design
+cluster_sample$strat <- sample(c("urban", "rural"),
+                               nrow(cluster_sample),
+                               prob = c(.95, .05),
+                               replace = TRUE)
+cluster_sample$strat_size <- round(sum(psu_ssu$hh) * .95)
+cluster_sample$strat_size[cluster_sample$strat == "rural"] <-
+  round(sum(psu_ssu$hh) * .05)
+design <- DesignSurvey(cluster_sample,
+                       N = "strat_size",
+                       strata = "strat",
+                       cal.N = 129445)
 
 }
 \references{
 Lumley, T. (2011). Complex surveys: A guide to analysis using R (Vol. 565). Wiley.
+
+Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
 
 \url{http://oswaldosantos.github.io/capm}
 }

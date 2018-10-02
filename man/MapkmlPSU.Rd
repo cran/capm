@@ -4,22 +4,20 @@
 \alias{MapkmlPSU}
 \title{Creates *.kml files of a subset of polygons from a polygon shapefile}
 \usage{
-MapkmlPSU(shape = NULL, psu = NULL, id = NULL, path = ".")
+MapkmlPSU(shape = NULL, psu = NULL, id = NULL)
 }
 \arguments{
-\item{shape}{string with the name of a polygon shapefile or an object of \code{\link{class}} \link[sp]{SpatialPolygonsDataFrame} (see examples).}
+\item{shape}{string with the path of a polygon shapefile or an object of \code{\link{class}} \link[sf]{sf} (see examples).}
 
-\item{psu}{the values to be matched.}
+\item{psu}{polygons to subset.}
 
 \item{id}{column of the *.dbf file with the values to be matched against.}
-
-\item{path}{string indicating the path to the folder containing the shapfile. If the shapefile is in the working directory or if \code{shape} argument is a shapefile, \code{path} can be ignored.}
 }
 \value{
 *.kml files of the subsetted polygons.
 }
 \description{
-Subset polygons acording to the matches between a vector and a specified column from a \link[sp]{SpatialPolygonsDataFrame}.
+Subset the polygons specified in \code{psu} and creates *.kml files of theses polygons.
 }
 \details{
 If there are *.kml files in the working directory, the new created files will overwrite it in case of name matching.
@@ -27,31 +25,32 @@ If there are *.kml files in the working directory, the new created files will ov
 \code{shape} must receive a shapefile with appropriate coordinate reference system, otherwise, \code{MapkmlPSU} report an error.
 }
 \examples{
-data(city)
+data("psu_ssu")
 
-# Take a sample of 10 PSU.
-(selected_psu <- SamplePPS(psu.ssu = city[, c("track_id", "hh")], psu = 10))
-
+# Take a sample of 5 PSU.
+(selected_psu <- SamplePPS(psu.ssu = psu_ssu, psu = 5))
+ 
 ## Define shape from shapefile.
-shp_path <- system.file("extdata", package="capm")
+shp_path <- system.file("extdata/35SEE250GC_SIR.shp", package="capm")
 # The code above used a shapefile avaliable in the
 # capm package.
 # You might want to write a code like:
 # shp.path  <- 'path_to_the_folder_with_the_shapefile'
-
+ 
 # Create *kml files of 10 polygons.
 \dontrun{
-MapkmlPSU(shape = "35SEE250GC_SIR",
-          psu = selected_psu[, "selected.psu"],
-          id = "CD_GEOCODI", path = shp_path)
+MapkmlPSU(shape = shp_path,
+         psu = selected_psu[, "selected_psu"],
+         id = "CD_GEOCODI")
 
-## Define the shape argument as an object x of class SpatialPolygonsDataFrame.
-MapkmlPSU(shape = x, psu = selected_psu[, "selected.psu"], id = "CD_GEOCODI")
+## Define the shape argument as an object x of class sf.
+x <- read_sf(shp_path)
+MapkmlPSU(shape = x, psu = selected_psu[, "selected_psu"], id = "CD_GEOCODI")
 }
+
 }
 \references{
+Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
+
 \url{http://oswaldosantos.github.io/capm}
-}
-\seealso{
-\code{\link{readShapeSpatial}}
 }

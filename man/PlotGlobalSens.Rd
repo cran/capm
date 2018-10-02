@@ -6,7 +6,8 @@
 \usage{
 PlotGlobalSens(global.out = NULL, x.label = "Time",
   y.label = "Population", legend.label = "Sensitivity range",
-  mm.label = "min - max", sd.label = "mean +- sd   ")
+  qt.label = "Qt 0.05 - 0.95", sd.label = "mean +- sd   ",
+  inner.color = "DarkRed", outer.color = "LightBlue")
 }
 \arguments{
 \item{global.out}{output from \code{\link{CalculateGlobalSens}} function.}
@@ -17,9 +18,13 @@ PlotGlobalSens(global.out = NULL, x.label = "Time",
 
 \item{legend.label}{string with the name for the legend.}
 
-\item{mm.label}{string with the name for the envelope calculated using the minimum and maximum ranges.}
+\item{qt.label}{string with the name for the envelope calculated using the quantiles 0.05 and 0.95.}
 
 \item{sd.label}{string with the name for the envelope calculated using the mean +- standard deviation ranges.}
+
+\item{inner.color}{any valid specification of a color for the inner envelope.}
+
+\item{outer.color}{any valid specification of a color for the outer envelope.}
 }
 \description{
 Plot results of of \code{\link{CalculateGlobalSens}} function.
@@ -33,28 +38,21 @@ Other details of the plot can be modifyed using appropriate functions from \code
 ## IASA model
 
 ## Parameters and intial conditions.
-pars_solve_iasa = c(
-   b1 = 21871, b2 = 4374,
-   df1 = 0.104, dm1 = 0.098, df2 = 0.125, dm2 = 0.118,
-   sf1 = 0.069, sf2 = 0.05, sm1 = 0.028, sm2 = 0.05,
-   k1 = 98050, k2 = 8055, h1 = 1, h2 = 0.5,
-   a = 0.054, alpha = 0.1, v = 0.2, z = 0.1)
-   
-init_solve_iasa = c(
-   f1 = 33425, fs1 = 10865,
-   m1 = 38039, ms1 = 6808,
-   f2 = 3343, fs2 = 109,
-   m2 = 3804, ms2 = 68)
-   
+data(dogs)
+dogs_iasa <- GetDataIASA(dogs,
+                         destination.label = "Pinhais",
+                         total.estimate = 50444)
 
 # Solve for point estimates.
-solve_iasa_pt <- SolveIASA(pars = pars_solve_iasa, 
-                          init = init_solve_iasa, 
-                          time = 0:15, method = 'rk4')
+solve_iasa_pt <- SolveIASA(pars = dogs_iasa$pars,
+                          init = dogs_iasa$init,
+                          time = 0:15,
+                          alpha.owned = TRUE,
+                          method = 'rk4')
 
 ## Set ranges 10 \% greater and lesser than the
 ## point estimates.
-rg_solve_iasa <- SetRanges(pars = pars_solve_iasa)
+rg_solve_iasa <- SetRanges(pars = dogs_iasa$pars)
 
 ## Calculate golobal sensitivity of combined parameters.
 ## To calculate global sensitivity to each parameter, set
@@ -63,12 +61,12 @@ glob_all_solve_iasa <- CalculateGlobalSens(
   model.out = solve_iasa_pt,
   ranges = rg_solve_iasa, 
   sensv = "n2", all = TRUE)
-
-### Plot the sensitivities of combined parameters.
 PlotGlobalSens(glob_all_solve_iasa)
 
 }
 \references{
+Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
+
 \url{http://oswaldosantos.github.io/capm}
 }
 \seealso{
