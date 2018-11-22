@@ -1,3 +1,18 @@
+capm 0.13.8
+===========
+
+# MapkmlPSU: new argument "path".
+
+capm 0.13.7
+===========
+
+# PlotImmigrationFlow: bug fixed to properly select the first sources of immigration.
+
+capm 0.13.6
+===========
+
+# SolveIASA: bug fixed, new argument immigration.reference, and new default for alpha.owned.
+
 capm 0.13.5
 ===========
 
