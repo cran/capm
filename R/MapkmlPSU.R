@@ -44,26 +44,26 @@ MapkmlPSU <- function(shape = NULL, psu = NULL, id = NULL, path = "./psu_maps/")
   }
   tmp <- st_transform(tmp, 4326)
   tmp2 = NULL
-  path <- normalizePath(path)
   if (dir.exists(path)) {
     unlink(path, recursive = TRUE)
   }
   dir.create(path)
+  path <- normalizePath(path)
   for(i in 1:length(psu)) {
     tmp1 <- tmp[which(as.character(tmp[[id]]) == psu[i]), ]
     if (file.exists(paste(path, eval(psu[i]), '.kml', sep =''))) {
       file.remove(paste(path, eval(psu[i]), '.kml', sep =''))
     }
-    st_write(tmp1, dsn = paste(path, eval(psu[i]), '.kml', sep =''), 
+    st_write(tmp1, dsn = paste(path, "/", eval(psu[i]), '.kml', sep =''), 
              layer = 'selected_psu', driver = 'KML', delete_layer = TRUE,
              quiet = TRUE)
     tmp2[i] <- which(as.character(tmp[[id]]) == psu[i])
   }
   tmp2 <- tmp[tmp2, ]
-  if (file.exists(paste0(path, 'all_psu.kml'))) {
-    file.remove(paste0(path, 'all_psu.kml'))
+  if (file.exists(paste0(path, '/all_psu.kml'))) {
+    file.remove(paste0(path, '/all_psu.kml'))
   }
-  st_write(tmp2, dsn = paste0(path, 'all_psu.kml'), layer = 'all_selected_psu',
+  st_write(tmp2, dsn = paste0(path, '/all_psu.kml'), layer = 'all_selected_psu',
            driver = 'KML', delete_layer = TRUE, quiet = TRUE)
   return(cat('\n', 'The maps are in the directory:', '\n\n', path))
 }

@@ -1,6 +1,6 @@
-70b9fe1141945730ba6ef94e16b02da1 *DESCRIPTION
+a2a458849a98876b5bfe5bc6f9256765 *DESCRIPTION
 8c82764d8f47f00a79a8dc189a7f9a05 *NAMESPACE
-a6a403e0189187b610ea046d49cadd5d *NEWS
+36c3b411d0eb7bad5360aca8d839bb18 *NEWS
 b6bea255797302b10afe8e4e7a8815ca *R/Calculate2StageSampleSize.R
 878149a0198dc50812f29dc7b00abe4e *R/CalculateGlobalSens.R
 64319883322e6673d43d299d1157990a *R/CalculateLocalSens.R
@@ -10,7 +10,7 @@ fef4df00f093e0220869321bd686f0ad *R/CalculateSimpleSampleSize.R
 1014c1046a5dbb48ffe7446c69d94024 *R/DesignSurvey.R
 5245b8412d8467560c2e4693f4868c94 *R/FreqTab.R
 eb8fbb55ad11a1b4716afebfd2ef9462 *R/GetDataIASA.R
-a3da29728af453543449c051e07d6d61 *R/MapkmlPSU.R
+067f3336b96e2c1678dda30e0277a004 *R/MapkmlPSU.R
 a2e322f05b27e02cc352efe83574f501 *R/PlotGlobalSens.R
 aede4fd0a88d18d6b636caef017630a4 *R/PlotHHxSpecies.R
 31cbb303a46001c553bb1a524e9696f9 *R/PlotImmigrationFlow.R
@@ -24,7 +24,7 @@ a0fa7b9c50ebf07f50ca84088ae66b13 *R/SetRanges.R
 0abc7beb9f22fd4f10d793ce3655bf87 *R/SolveSI.R
 e822799877da167da8c1f4953a0c2be1 *R/SolveTC.R
 55fb41703ccbe6db233ee7b34fd99f63 *R/SummarySurvey.R
-eb6bb5527d2ed55c4630150ef17887b9 *R/capm-package.R
+42247f4b8121466b612a7cd91b044f99 *R/capm-package.R
 5e6ab6b5ed53b6e950ee183fac68f15b *R/cats.R
 5f8b380d4701d25d6906b0e1118dd8aa *R/cluster_sample.R
 89a7f6e4bdeb1de909d960a57c577e5b *R/dogs.R
@@ -62,7 +62,7 @@ bb4acf57d3e2fc08ae77d1dd601a7b90 *man/SetRanges.Rd
 495fc752b79ad45d890b61ffce4dd32d *man/SolveSI.Rd
 7133c38377ff278669ba2fa955279a35 *man/SolveTC.Rd
 2f8eee14a1979c782f33ed27cc63a173 *man/SummarySurvey.Rd
-a139d69be1f79f9602e28730a88ab62d *man/capm-package.Rd
+ea0061f355e492c5dcb0608402f66fef *man/capm-package.Rd
 4c0c12de62e9954eaf9853ade59c94d1 *man/cats.Rd
 3ad0f83dc4f624b5a8c62b4e61c1f65a *man/cluster_sample.Rd
 2e9673990c78c4ba37380e508c05f09c *man/dogs.Rd
