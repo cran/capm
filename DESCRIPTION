@@ -24,14 +24,14 @@ Authors@R: c(person(given='Oswaldo', family='Santos Baquero',
     email='amaku@usp.br', role="ctb"),
     person(given='Fernando', family='Ferreira',
     email='fferreir@usp.br', role="ctb"))
-Version: 0.13.9
-Date: 2018-11-26
-RoxygenNote: 6.0.1
+Version: 0.13.10
+Date: 2019-04-19
+RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2018-11-26 20:16:51 UTC; oswaldo
+Packaged: 2019-04-19 17:10:37 UTC; oswaldo
 Author: Oswaldo Santos Baquero [aut, cre],
   Marcos Amaku [ctb],
   Fernando Ferreira [ctb]
 Maintainer: Oswaldo Santos Baquero <baquero@usp.br>
 Repository: CRAN
-Date/Publication: 2018-11-26 20:40:03 UTC
+Date/Publication: 2019-04-19 17:30:02 UTC
