@@ -1,14 +1,14 @@
 #' Summary statistics for sample surveys
 #' @description Wraps functions for summary statistics from survey package.
 #' @param design an output form \code{\link{DesignSurvey}} function.
-#' @param variables \code{\link{character}} \code{\link{vector}} with the type of estimate for each variable contained in \code{design} (see details).
+#' @param variables \code{\link{character}} \code{\link{vector}} with the type of estimate for each variable contained in \code{design}. Possible types: total, mean, and prop (see details).
 #' @param conf.level the confidence level required.
 #' @param rnd the number of decimal places (round) or significant digits (signif) to be used. If \code{NA}, scientific notation is used.
-#' @return Matrix with survey summaries.
+#' @return Matrix with survey summaries. The error (column "Error (%)") for totals and means is equal to the coefficient of variation times \code{conf.level} times 100; for proportions it is equal to the upper confidence limit minus the point estimate times 100, that is, percent points.
 #' @details The length of \code{variables} must be equal to the length of \code{names(design$variables)} (see examples).
 #' @references Lumley, T. (2011). Complex surveys: A guide to analysis using R (Vol. 565). Wiley.
 #' 
-#' Baquero, O. S., Akamine, L. A., Amaku, M., & Ferreira, F. (2016). Defining priorities for dog population management through mathematical modeling. Preventive veterinary medicine, 123, 121-127.
+#' Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
 #' 
 #' \url{http://oswaldosantos.github.io/capm}
 #' @export
@@ -63,7 +63,7 @@ SummarySurvey <- function(design = NULL, variables = NULL, conf.level = 0.95, rn
     if (variables[i] == 'prop') {
       tmp <- svymean(~ vrs[, i], design, na.rm = T, deff = T)
       tmp1 <- as.matrix(cbind(tmp, SE(tmp), confint(tmp), 
-                              deff(tmp), cv(tmp) * z * 100), nr = 1)
+                              deff(tmp), confint(tmp)[, 2] - tmp[1] * 100), nr = 1)
       ci <- attributes(confint(tmp, level = conf.level))$dimnames[[2]]
       rownames(tmp1) <- paste0('Prop_', rownames(tmp1))
       rownames(tmp1) <- gsub('vrs\\[, i\\]', paste0(names(vrs)[i]), rownames(tmp1))

@@ -57,9 +57,9 @@ DesignSurvey <- function (sample = NULL, psu.ssu = NULL, psu.col = NULL,
   if(any(class(sample) == "data.frame")) {
     sample <- as.data.frame(sample)
   }
-  if (!is.null(psu.ssu)) {
+  if (!is.null(psu.ssu)) { # Two-stage cluster design
     psu.ssu <- as.data.frame(psu.ssu)
-    if (length(which(!is.na(match(psu.ssu[, 1], sample[, psu.col])))) == 0) {
+    if (sum(psu.ssu[, 1] %in% sample[, psu.col]) == 0) {
       stop("There is no matches between PSU identifiers\nfrom psu.ssu and sample. See details section from the help page.")
     }
     if (is.numeric(psu.col)) {
@@ -72,17 +72,14 @@ DesignSurvey <- function (sample = NULL, psu.ssu = NULL, psu.col = NULL,
     } else {
       names(sample)[names(sample) == ssu.col] <- "ssu.id"
     }
-    pop.size <- nrow(psu.ssu) # PSUs in the population.
-    sample <- cbind(sample, pop.size)
+    sample$pop.size <- nrow(psu.ssu) # PSUs in the population
     sample <- merge(sample, psu.ssu, by.x = "psu.id", by.y = 1)
-    names(sample)[ncol(sample)] <- "psu.size" # SSUs per PSU.
-    psu.sample.size <- tapply(sample$psu.size, sample$psu.id, length)
-    psu.sample.size <-
-      rep(psu.sample.size, psu.sample.size) # sampled SSUs per PSU
-    f.1 <- sum(tapply(sample$psu.size, sample$psu.id, unique)) /
-      sum(psu.ssu[, 2]) # SSUs in first stage / SSUs in population
-    f.2 <- psu.sample.size/sample$psu.size # sampled SSUs per PSU / SSUs per PSU 
-    sample$weights <- 1/(f.1 * f.2)
+    names(sample)[ncol(sample)] <- "psu.size"
+    psu.sample.size <- tapply(sample$psu.size, sample$psu.id, length) # SSUs per PSU
+    psu.sample.size <- rep(psu.sample.size, psu.sample.size) # sampled SSUs per PSU
+    w1 <- sum(psu.ssu[, 2]) / sample$psu.size
+    w2 <- sample$psu.size / psu.sample.size
+    sample$weights <- w1 * w2 / length(unique(sample$psu.id))
     dsn <- svydesign(ids = ~psu.id + ssu.id, fpc = ~pop.size + 
                        psu.size, weights = ~weights, data = sample, ...)
     for (i in c('psu.id', 'ssu.id', 'pop.size', 'psu.size', 'weights')) {
@@ -93,7 +90,7 @@ DesignSurvey <- function (sample = NULL, psu.ssu = NULL, psu.col = NULL,
     }
     return(dsn)
   }
-  if (!is.null(N) & is.null(strata)) {
+  if (!is.null(N) & is.null(strata)) { # Simple design
     sample$N <- N
     dsn <- svydesign(ids = ~1, fpc = ~N, data = sample)
     if (!is.null(cal.col) & !is.null(cal.N)) {
@@ -103,7 +100,7 @@ DesignSurvey <- function (sample = NULL, psu.ssu = NULL, psu.col = NULL,
     dsn$simple <- 'yes'
     return(dsn)
   }
-  if (!is.null(N) & !is.null(strata)) {
+  if (!is.null(N) & !is.null(strata)) { # Stratified design
     dsn <- svydesign(ids = ~1, fpc = ~sample[, N],
                      strata = ~sample[, strata], data = sample)
     if (!is.null(cal.col) & !is.null(cal.N)) {

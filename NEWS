@@ -1,27 +1,34 @@
+capm 0.14.0
+============
+
+* SummarySurvey: error of estimated proportions presented in percent points. Improvements in documentation.
+
+* DesignSurvey: bug fixed in sampling weights of the two-stage cluster design.
+
 capm 0.13.10
 ============
 
-# PlotPopPyramid: bug fixed in the order of age categories.
+* PlotPopPyramid: bug fixed in the order of age categories.
 
 capm 0.13.9
 ===========
 
-# MapkmlPSU: bug fixed in the argument "path".
+* MapkmlPSU: bug fixed in the argument "path".
 
 capm 0.13.8
 ===========
 
-# MapkmlPSU: new argument "path".
+* MapkmlPSU: new argument "path".
 
 capm 0.13.7
 ===========
 
-# PlotImmigrationFlow: bug fixed to properly select the first sources of immigration.
+* PlotImmigrationFlow: bug fixed to properly select the first sources of immigration.
 
 capm 0.13.6
 ===========
 
-# SolveIASA: bug fixed, new argument immigration.reference, and new default for alpha.owned.
+* SolveIASA: bug fixed, new argument immigration.reference, and new default for alpha.owned.
 
 capm 0.13.5
 ===========

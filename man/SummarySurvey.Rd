@@ -10,14 +10,14 @@ SummarySurvey(design = NULL, variables = NULL, conf.level = 0.95,
 \arguments{
 \item{design}{an output form \code{\link{DesignSurvey}} function.}
 
-\item{variables}{\code{\link{character}} \code{\link{vector}} with the type of estimate for each variable contained in \code{design} (see details).}
+\item{variables}{\code{\link{character}} \code{\link{vector}} with the type of estimate for each variable contained in \code{design}. Possible types: total, mean, and prop (see details).}
 
 \item{conf.level}{the confidence level required.}
 
 \item{rnd}{the number of decimal places (round) or significant digits (signif) to be used. If \code{NA}, scientific notation is used.}
 }
 \value{
-Matrix with survey summaries.
+Matrix with survey summaries. The error (column "Error (%)") for totals and means is equal to the coefficient of variation times \code{conf.level} times 100; for proportions it is equal to the upper confidence limit minus the point estimate times 100, that is, percent points.
 }
 \description{
 Wraps functions for summary statistics from survey package.
@@ -49,7 +49,7 @@ SummarySurvey(design, c("total", "total", "total"))
 \references{
 Lumley, T. (2011). Complex surveys: A guide to analysis using R (Vol. 565). Wiley.
 
-Baquero, O. S., Akamine, L. A., Amaku, M., & Ferreira, F. (2016). Defining priorities for dog population management through mathematical modeling. Preventive veterinary medicine, 123, 121-127.
+Baquero, O. S., Marconcin, S., Rocha, A., & Garcia, R. D. C. M. (2018). Companion animal demography and population management in Pinhais, Brazil. Preventive Veterinary Medicine.
 
 \url{http://oswaldosantos.github.io/capm}
 }

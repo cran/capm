@@ -16,7 +16,7 @@ Description: Quantitative analysis to support companion animal population
     see: "Levy PS & Lemeshow S" (2013), "ISBN-10: 0470040076"; 
     "Lumley" (2010), "ISBN: 978-0-470-28430-8".
 License: GPL (>= 2)
-LazyLoad: yes
+LazyData: true
 URL: http://oswaldosantos.github.io/capm
 Authors@R: c(person(given='Oswaldo', family='Santos Baquero',
     email='baquero@usp.br', role=c("aut", "cre")),
@@ -24,14 +24,14 @@ Authors@R: c(person(given='Oswaldo', family='Santos Baquero',
     email='amaku@usp.br', role="ctb"),
     person(given='Fernando', family='Ferreira',
     email='fferreir@usp.br', role="ctb"))
-Version: 0.13.10
-Date: 2019-04-19
+Version: 0.14.0
+Date: 2019-10-24
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-04-19 17:10:37 UTC; oswaldo
+Packaged: 2019-10-24 16:29:36 UTC; oswaldo
 Author: Oswaldo Santos Baquero [aut, cre],
   Marcos Amaku [ctb],
   Fernando Ferreira [ctb]
 Maintainer: Oswaldo Santos Baquero <baquero@usp.br>
 Repository: CRAN
-Date/Publication: 2019-04-19 17:30:02 UTC
+Date/Publication: 2019-10-24 16:50:05 UTC
